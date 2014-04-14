@@ -1,4 +1,4 @@
 djadmin.github.io
 =================
 
-This is demonstrate my projects
+This is to demonstrate my projects

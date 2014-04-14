@@ -1,86 +1,82 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+<!doctype html>
 
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+<title>CodeMirror: Search/Replace Demo</title>
+<meta charset="utf-8"/>
+<link rel=stylesheet href="./doc/docs.css">
 
-    <!-- CodeMirror Files -->      
-    <link rel="stylesheet" href="lib/codemirror.css">
-    <link rel="stylesheet" href="lib/monokai.css">
-    <link rel="stylesheet" href="addon/hint/show-hint.css">
-    <script src="lib/codemirror.js"></script>
-    <script src="addon/hint/show-hint.js"></script>
-    <script src="addon/hint/javascript-hint.js"></script>
-    <script src="mode/javascript/javascript.js"></script>
+<link rel="stylesheet" href="./lib/codemirror.css">
+<link rel="stylesheet" href="./addon/dialog/dialog.css">
+<script src="./lib/codemirror.js"></script>
+<script src="./mode/xml/xml.js"></script>
+<script src="./addon/dialog/dialog.js"></script>
+<script src="./addon/search/searchcursor.js"></script>
+<script src="./addon/search/goto-line.js"></script>
+<style type="text/css">
+      .CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
+      dt {font-family: monospace; color: #666;}
+    </style>
+<div id=nav>
+  <a href="http://codemirror.net"><img id=logo src="./doc/logo.png"></a>
 
-    <title>Djadmin.github.io by djadmin</title>
-  </head>
+  <ul>
+    <li><a href="../index.html">Home</a>
+    <li><a href="../doc/manual.html">Manual</a>
+    <li><a href="https://github.com/marijnh/codemirror">Code</a>
+  </ul>
+  <ul>
+    <li><a class=active href="#">Search/Replace</a>
+  </ul>
+</div>
 
-  <body>
+<article>
+<h2>Go to Line Demo</h2>
+<form><textarea id="code" name="code">
+<dl>
+  <dt id="option_indentWithTabs"><code><strong>indentWithTabs</strong>: boolean</code></dt>
+  <dd>Whether, when indenting, the first N*<code>tabSize</code>
+  spaces should be replaced by N tabs. Default is false.</dd>
 
-    <header>
-      <div class="container">
-        <h1>Djadmin.github.io</h1>
-        <h2>This is to demonstrate my projects</h2>
+  <dt id="option_electricChars"><code><strong>electricChars</strong>: boolean</code></dt>
+  <dd>Configures whether the editor should re-indent the current
+  line when a character is typed that might change its proper
+  indentation (only works if the mode supports indentation).
+  Default is true.</dd>
 
-        <section id="downloads">
-          <a href="https://github.com/djadmin" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-        </section>
-      </div>
-    </header>
+  <dt id="option_specialChars"><code><strong>specialChars</strong>: RegExp</code></dt>
+  <dd>A regular expression used to determine which characters
+  should be replaced by a
+  special <a href="#option_specialCharPlaceholder">placeholder</a>.
+  Mostly useful for non-printing special characters. The default
+  is <code>/[\u0000-\u0019\u00ad\u200b\u2028\u2029\ufeff]/</code>.</dd>
+  <dt id="option_specialCharPlaceholder"><code><strong>specialCharPlaceholder</strong>: function(char) → Element</code></dt>
+  <dd>A function that, given a special character identified by
+  the <a href="#option_specialChars"><code>specialChars</code></a>
+  option, produces a DOM node that is used to represent the
+  character. By default, a red dot (<span style="color: red">•</span>)
+  is shown, with a title tooltip to indicate the character code.</dd>
 
-    <div class="container">
-      <section id="main_content">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>CodeMirror Addon Feature Request</h3>
-<textarea id="code" name="code">
-function getCompletions(token, context) {
-  var found = [], start = token.string;
-  function maybeAdd(str) {
-    if (str.indexOf(start) == 0) found.push(str);
-  }
-  function gatherCompletions(obj) {
-    if (typeof obj == "string") forEach(stringProps, maybeAdd);
-    else if (obj instanceof Array) forEach(arrayProps, maybeAdd);
-    else if (obj instanceof Function) forEach(funcProps, maybeAdd);
-    for (var name in obj) maybeAdd(name);
-  }
+  <dt id="option_rtlMoveVisually"><code><strong>rtlMoveVisually</strong>: boolean</code></dt>
+  <dd>Determines whether horizontal cursor movement through
+  right-to-left (Arabic, Hebrew) text is visual (pressing the left
+  arrow moves the cursor left) or logical (pressing the left arrow
+  moves to the next lower index in the string, which is visually
+  right in right-to-left text). The default is <code>false</code>
+  on Windows, and <code>true</code> on other platforms.</dd>
+</dl>
+</textarea></form>
 
-  if (context) {
-    // If this is a property, see if it belongs to some object we can
-    // find in the current environment.
-    var obj = context.pop(), base;
-    if (obj.className == "js-variable")
-      base = window[obj.string];
-    else if (obj.className == "js-string")
-      base = "";
-    else if (obj.className == "js-atom")
-      base = 1;
-    while (base != null && context.length)
-      base = base[context.pop().string];
-    if (base != null) gatherCompletions(base);
-  }
-  else {
-    // If not, just look in the window object and any local scope
-    // (reading into JS mode internals to get at the local variables)
-    for (var v = token.state.localVars; v; v = v.next) maybeAdd(v.name);
-    gatherCompletions(window);
-    forEach(keywords, maybeAdd);
-  }
-  return found;
-}
-</textarea>
-<script>
-      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        theme:"monokai",
-        lineNumbers: true,
-        extraKeys: {"Ctrl-Space": "autocomplete"},
-        mode: {name: "javascript", globalVars: true}
-      });
-    </script>
-  </body>
-</html>
+    <script>
+var editor = CodeMirror.fromTextArea(document.getElementById("code"), {mode: "text/html", lineNumbers: true});
+</script>
+
+    <p>Demonstration of Go to Line(Jump to Line) functionality. The
+    keybindings (which can be overridden by custom keymaps) are:</p>
+    <dl>
+      <dt>Ctrl-G / Cmd-G </dt><dd>Jump to Line</dd>
+    </dl>
+    <p>Go to Line is enabled by
+    including <a href="./addon/search/goto-line.js">addon/search/goto-line.js</a>.
+    For good-looking input dialogs, you also want to include
+    <a href="./addon/dialog/dialog.js">addon/dialog/dialog.js</a>
+    and <a href="./addon/dialog/dialog.css">addon/dialog/dialog.css</a>.</p>
+  </article>

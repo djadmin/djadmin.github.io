@@ -1,0 +1,23 @@
+<html>
+	<head>
+		<script src="parser.js"></script>
+		<script>
+			function validate() {
+				try {
+					var msg = delugeParser.parse("a=form[a==b].sum(a)");
+					//var msg = delugeParser.parse("a=1;");
+					console.log(msg);
+				}
+				catch(err) {
+					console.log(err);
+				}
+			}
+			validate();
+		</script>
+	</head>
+	<body>
+		<h1>PEG Parser</h1>
+
+		<button onclick="validate()">Validate</button>
+	</body>
+</html>

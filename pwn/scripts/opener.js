@@ -1,1 +1,0 @@
-window.opener.location.replace('scam.html');

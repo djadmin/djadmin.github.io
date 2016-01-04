@@ -1,3 +1,3 @@
-#Personal Website
+#You're welcome to know a lil more about me.
 
-[djadmin.in](djadmin.in)
+[djadmin.in](https://djadmin.in)

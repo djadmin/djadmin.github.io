@@ -1,0 +1,85 @@
+
+html {
+	background: #222;
+	color: white;
+	font-family: 'Raleway', sans-serif;
+	text-transform: uppercase;
+}
+h1 {
+	background: #000;
+	border-radius: 0.3rem;
+	padding: 0.3rem 0.5rem;
+	font-size: 2.5rem;
+	line-height: 2.5rem;
+	margin: 0;
+}
+.clover {
+	height: 2.9rem;
+	width: 2.9rem;
+	margin: 0.1rem 1.1rem;
+}
+#top * {
+	display: inline-block;
+	vertical-align: top;
+	margin-top: 5rem;
+}
+#bop {
+	margin-top: 0.8rem;
+	font-size: 0.85rem;
+}
+#fop {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 2rem;
+	padding-bottom: 1rem;
+	transform: scale(0.75,0.75);
+}
+#fop img {
+	height: 2rem;
+	margin: 0 0.6rem;
+}
+.dot:before {
+	content: " / ";
+	color: #ABABAB;
+}
+@media (max-width: 321px) {
+	#fop {
+		position: static;
+		margin-top: 5rem;
+	}
+	#fop img {
+		height: 3rem;
+		margin: 0 1rem;
+	}
+	#fop img#twitter {
+		height: 2.5rem;
+		margin-bottom: 0.25rem;
+	}
+}
+@media (min-width: 320px) {
+	html {
+		font-size: 10px;
+	}
+}
+@media (min-width: 320px) and (orientation: landscape) {
+	html {
+		font-size: 15px;
+	}
+}
+@media (min-width: 589px) {
+	html {
+		font-size: 20px;
+	}
+}
+@media (min-width: 733px) {
+	html {
+		font-size: 25px;
+	}
+}
+@media (min-width: 870px) {
+	html {
+		font-size: 30px;
+	}
+}
